@@ -1,4 +1,4 @@
-d3.csv("/data/VEN_viz.csv", function (data) {
+d3.csv("/templates/data/VEN_viz.csv", function (data) {
 
   create_chart(data);
 
