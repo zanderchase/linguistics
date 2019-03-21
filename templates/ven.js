@@ -1,5 +1,4 @@
-
-Plotly.d3.csv("/data/VEN_viz.csv", function (err, data) {
+d3.csv("/data/VEN_viz.csv", function (err, data) {
   // Create a lookup table to sort and regroup the columns of data,
   // first by year, then by continent:
   var lookup = {};
