@@ -43,10 +43,14 @@ function create_chart(data) {
 
   // Get the group names:
   var years = Object.keys(lookup);
+  console.log(years);
   // In this case, every year includes every continent, so we
   // can just infer the continents from the *first* year:
   var firstYear = lookup[years[0]];
+  console.log('HEY');
+  console.log(firstYear);
   var continents = Object.keys(firstYear);
+  console.log(continents);
 
   // Create the main traces, one for each continent:
   var traces = [];
