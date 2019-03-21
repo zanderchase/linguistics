@@ -1,5 +1,5 @@
 d3.csv("VEN_viz.csv", function (data) {
-  console.log('heeeeeere');
+  console.log('yooo');
   create_chart(data);
 
 });
@@ -31,6 +31,7 @@ function create_chart(data) {
   for (var i = 0; i < data.length; i++) {
     
     var datum = data[i];
+    console.log('wowow')
     console.log(datum);
     var trace = getData(datum.year, datum.continent);
     trace.text.push(datum.country);
