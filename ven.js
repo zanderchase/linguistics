@@ -1,10 +1,11 @@
 d3.csv("VEN_viz.csv", function (data) {
-  console.log('yoski');
+  console.log('yoskiii');
   create_chart(data);
 
 });
 
 function create_chart(data) {
+  console.log(data);
   // Create a lookup table to sort and regroup the columns of data,
   // first by year, then by continent:
   var lookup = {};
