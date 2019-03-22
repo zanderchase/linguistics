@@ -132,7 +132,7 @@ function create_chart(data) {
     yaxis: {
       title: '% of all usage',
       //type: 'log',
-      range: [0.03, 0.03]
+      //range: [0.03, 0.03]
     },
     hovermode: 'closest',
 	 // We'll use updatemenus (whose functionality includes menus as
