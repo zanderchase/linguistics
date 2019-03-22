@@ -217,7 +217,7 @@ function filterCountries(admin, word) {
 // Fill in the list of words
 const widgetDom = document.querySelector('#wordWidget');
 const wordsDom = widgetDom.querySelector('.js-words');
-const wordNames = ['popcorn', 'canchita','pochoclo', 'crispetas', 'pop', 'pororo', 'pororó','almacén','acera', 'andén', 'badén', 'calzada', 'contén', 'escarpa', 'vereda']
+const wordNames = ['carro', 'auto', 'pelotudo', 'oye', 'cono', 'campera', 'vaina', 'pana', 'pororo','vereda']
 wordNames.forEach(admin => {
   const option = document.createElement('option');
   option.innerHTML = admin;
