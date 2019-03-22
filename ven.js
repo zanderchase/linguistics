@@ -1,12 +1,28 @@
-Plotly.d3.csv("VEN_viz.csv", function (data) {
-  console.log('yoski');
-  console.log(data);
-  create_chart(data);
+Plotly.d3.csv(VEN_viz.csv', function (err, data) {
 
+  ///console.log('heeeeeere')
+  //console.log(data)
+  //create_chart(data);
+
+  // my_data = [
+  //   {country: "cono", year: "2019-1-1", pop: "11", continent: "Slang", lifeExp: "0.024891", gdpPercap: "0.002952"},
+  //   {country: "cono", year: "2019-2-1", pop: "929", continent: "Slang", lifeExp: "0.322942", gdpPercap: "0.00142952"},
+  //   {country: "cono", year: "2019-3-1", pop: "2539", continent: "Slang", lifeExp: "0.6220942", gdpPercap: "0.003952"},
+  //   {country: "regimen", year: "2019-3-1", pop: "567", continent: "Political", lifeExp: "0.006411", gdpPercap: "0.002725"},
+  //   {country: "maduro", year: "2019-2-1", pop: "936", continent: "Politician", lifeExp: "0.015891", gdpPercap: "0.013423"},
+  //   {country: "maduro", year: "2019-3-1", pop: "1936", continent: "Politician", lifeExp: "0.021891", gdpPercap: "0.013423"},
+  //
+  // ];
+
+
+  create_chart(data);
 });
 
+
+
 function create_chart(data) {
-  console.log(data);
+  console.log('in')
+  console.log(data)
   // Create a lookup table to sort and regroup the columns of data,
   // first by year, then by continent:
   var lookup = {};
@@ -30,29 +46,28 @@ function create_chart(data) {
   }
 
   // Go through each row, get the right trace, and append the data:
+  console.log(data.length)
   for (var i = 0; i < data.length; i++) {
-    
+    //console.log('WOW')
     var datum = data[i];
-    console.log('wowow')
-    console.log(datum);
+    //console.log(datum)
     var trace = getData(datum.year, datum.continent);
     trace.text.push(datum.country);
     trace.id.push(datum.country);
     trace.x.push(datum.lifeExp);
     trace.y.push(datum.gdpPercap);
+    //console.log(datum.pop);
     trace.marker.size.push(datum.pop);
   }
 
   // Get the group names:
   var years = Object.keys(lookup);
-  console.log(years);
+  console.log('whaaat')
+  console.log(years)
   // In this case, every year includes every continent, so we
   // can just infer the continents from the *first* year:
-  var firstYear = lookup[years[0]];
-  console.log('HEY');
-  console.log(firstYear);
+  var firstYear = lookup[years[2]];
   var continents = Object.keys(firstYear);
-  console.log(continents);
 
   // Create the main traces, one for each continent:
   var traces = [];
@@ -73,7 +88,7 @@ function create_chart(data) {
       marker: {
         size: data.marker.size.slice(),
         sizemode: 'area',
-        sizeref: 200000
+        sizeref: 2
       }
     });
   }
@@ -103,20 +118,21 @@ function create_chart(data) {
       label: years[i],
       args: [[years[i]], {
         mode: 'immediate',
-        transition: {duration: 300},
-        frame: {duration: 300, redraw: false},
+        transition: {duration: 500},
+        frame: {duration: 500, redraw: false},
       }]
     });
   }
 
   var layout = {
     xaxis: {
-      title: 'Life Expectancy',
-      range: [30, 85]
+      title: 'relative frequency',
+      //range: [0, 1]
     },
     yaxis: {
-      title: 'GDP per Capita',
-      type: 'log'
+      title: '% of all usage',
+      //type: 'log',
+      //range: [0.04, 0.04]
     },
     hovermode: 'closest',
 	 // We'll use updatemenus (whose functionality includes menus as
