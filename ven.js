@@ -1,4 +1,4 @@
-Plotly.d3.csv(VEN_viz.csv', function (err, data) {
+Plotly.d3.csv('VEN_viz.csv', function (err, data) {
 
   ///console.log('heeeeeere')
   //console.log(data)
