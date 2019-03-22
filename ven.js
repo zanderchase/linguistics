@@ -1,5 +1,6 @@
 d3.csv("VEN_viz.csv", function (data) {
   console.log('yoskiii');
+  console.log(data);
   create_chart(data);
 
 });
