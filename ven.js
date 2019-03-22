@@ -127,12 +127,12 @@ function create_chart(data) {
   var layout = {
     xaxis: {
       title: 'relative frequency',
-      //range: [0, 1]
+      range: [0, 1]
     },
     yaxis: {
       title: '% of all usage',
       //type: 'log',
-      //range: [0.04, 0.04]
+      range: [0.03, 0.03]
     },
     hovermode: 'closest',
 	 // We'll use updatemenus (whose functionality includes menus as
