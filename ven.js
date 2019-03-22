@@ -1,5 +1,5 @@
-d3.csv("VEN_viz.csv", function (data) {
-  console.log('yoskiii');
+Plotly.d3.csv("VEN_viz.csv", function (data) {
+  console.log('yoski');
   console.log(data);
   create_chart(data);
 
