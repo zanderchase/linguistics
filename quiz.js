@@ -2,7 +2,7 @@ var answers = [];
 var pos = 0, test, test_status, question, choice, choices, chA, chB, chC, chD, chE;
 var questions = [
   ["Cómo se llama un modo de transportación con cuatro ruedas?", "Coche", "Auto", "Carro", ""],
-  ["Cómo se llama algo que lleva cuando hace frio?", "Chaqueta", "Campera", "Saco", "Casca"],
+  ["Cómo se llama algo que lleva cuando hace frio?", "Campera", "Casca", "Saco", "Chaqueta"],
   ["Cómo se llama el aparato donde uno pone comida?", "Nevera", "Heladera", "Refrigerador", "Refrigeradora"],
   ["Cómo se llama al postre que se come en fiestas?", "Pastel", "Queque", "Ponqué", "Torta"],
   ["Cómo se llama una enfermedad con estornudos y secreción nasal?", "Gripa", "Resfrío", "Resfriado", "Gripe"]
@@ -32,6 +32,67 @@ questions_dict = {
   'Bolivia': centro_questions,
   'Chile': chile_questions,
 };
+
+sort_dict = {
+  'Argentina': 'rioplat',
+  'Paraguay': 'rioplat',
+  'Uruguay': 'rioplat',
+  'Colombia': 'norte',
+  'Venezuela': 'norte',
+  'Peru': 'centro',
+  'Ecuador': 'centro',
+  'Bolivia': 'centro',
+  'Chile': 'chile',
+};
+
+function finalcalc(region, answers){
+  if (region == 'rioplat') {
+    if (answers == 'A'){
+      return 'Argentina'
+    }
+    else if (answers == 'B') {
+      return 'Uruguay'
+    }
+    else if (answers == 'C') {
+      return 'Uruguay'
+    }
+    else {
+      return 'Paraguay'
+    }
+  }
+  if (region == 'centro') {
+    if (answers == 'A'){
+      return 'Peru'
+    }
+    else if (answers == 'B') {
+      return 'Bolivia'
+    }
+    else if (answers == 'C') {
+      return 'Bolivia'
+    }
+    else {
+      return 'Ecuador'
+    }
+  }
+  if (region == 'norte') {
+    if (answers == 'A'){
+      return 'Venezuela'
+    }
+    else if (answers == 'B') {
+      return 'Colombia'
+    }
+    else if (answers == 'C') {
+      return 'Colombia'
+    }
+    else {
+      return 'Venezuela'
+    }
+  }
+  if (region == 'chile') {
+    return 'Chile'
+  }
+}
+
 function _(x) {
   return document.getElementById(x);
 }
@@ -68,8 +129,8 @@ function calculateRegion(answers){
     var counter = 0
     var region = my_list[i];
     for (j=0; j < 5; j++) {
-      console.log(region[j])
-      console.log(answers)
+      //console.log(region[j])
+      //console.log(answers)
       counter += region[j][answers[j]]
     }
     if (counter >= greatest){
@@ -80,36 +141,36 @@ function calculateRegion(answers){
   return (my_names[return_number])
 }
 
-function calculateCityARG(answers){
-  var buenos_aires = [{A:4, B:0, C:0, D:0}];
-  var cordoba = [{A:3, B:0, C:0, D:0}];
-  var mendoza = [{A:3, B:0, C:0, D:0}];
-
-
-  var my_list = [buenos_aires, cordoba, mendoza];
-  var my_names = ['Buenos Aires', 'Córdoba', 'Mendoza'];
-
-  var greatest = 0;
-
-  for (i=0; i < my_list.length; i++) {
-    var counter = 0
-    var region = my_list[i];
-    for (j=0; j < region.length; j++) {
-      console.log(region[j])
-      console.log(answers)
-      counter += region[j][answers[j]]
-    }
-    if (counter >= greatest){
-      greatest = counter
-      return_number = i
-    }
-  }
-  return (my_names[return_number])
-}
+// function calculateCityARG(answers){
+//   var buenos_aires = [{A:4, B:0, C:0, D:0}];
+//   var cordoba = [{A:3, B:0, C:0, D:0}];
+//   var mendoza = [{A:3, B:0, C:0, D:0}];
+//
+//
+//   var my_list = [buenos_aires, cordoba, mendoza];
+//   var my_names = ['Buenos Aires', 'Córdoba', 'Mendoza'];
+//
+//   var greatest = 0;
+//
+//   for (i=0; i < my_list.length; i++) {
+//     var counter = 0
+//     var region = my_list[i];
+//     for (j=0; j < region.length; j++) {
+//       console.log(region[j])
+//       console.log(answers)
+//       counter += region[j][answers[j]]
+//     }
+//     if (counter >= greatest){
+//       greatest = counter
+//       return_number = i
+//     }
+//   }
+//   return (my_names[return_number])
+// }
 
 function renderQuestion(quests, poss){
   test = _("test");
-  _("test_status").innerHTML = "Question " + (pos + 1) + " of " + questions.length;
+  _("test_status").innerHTML = "Question " + (pos + 1) + " of 6";
   //console.log('here')
   question = quests[poss][0];
   //console.log(question)
@@ -152,6 +213,11 @@ function examineRegionQuestion(poss, region){
   //console.log('finished')
 }
 
+function finalize_quiz(country) {
+  test = _("test");
+  _("test_status").innerHTML = "Hablas más similar a alguien de " + country + ".";
+  test.innerHTML = "Gracias por tomar el quiz!"
+}
 
 function checkAnswer() {
   //alert("Ok, will do")
@@ -160,28 +226,28 @@ function checkAnswer() {
     if (choices[i].checked) {
       //console.log('checked')
       choice = choices[i].value;
-      console.log('yooo')
-      console.log(choice)
+      //console.log('yooo')
+      //console.log(choice)
     }
   }
   answers.push(choice)
-  console.log('answers')
-  console.log(answers)
+  //console.log('answers')
+  //console.log(answers)
   pos ++;
   if(pos == 5){
     var region = calculateRegion(answers);
-    alert('quiz over' + region)
+    //alert('quiz over' + region)
     examineRegionQuestion(pos, region);
   }
   else if (pos == 6){
-    console.log('HERE')
+    //console.log('HERE')
     var region = calculateRegion(answers);
-    console.log(region)
-    if(region == 'Argentina') {
-      console.log(answers.slice(5,))
-      var city = calculateCityARG(answers.slice(5,));
-      alert('quiz actually over' + city)
-    }
+    region = sort_dict[region];
+    //alert(region)
+    city = finalcalc(region, answers.slice(5,));
+    //console.log(answers.slice(5,))
+    //alert('quiz actually over' + city)
+    finalize_quiz(city);
     //alert('quiz over' + region)
     //examineRegionQuestion();
   }

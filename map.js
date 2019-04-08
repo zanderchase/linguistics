@@ -11,8 +11,8 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{
 }).addTo(map);
 
 var client = new carto.Client({
-  apiKey: 'f1dfb75f268561a2d0eeabad6631f9bcf144996b',
-  username: 'zanderchase'
+  apiKey: 'd05d4259be09523d50d1e62ad1e12d8f9207442c',
+  username: 'zchase111'
 });
 
 const LACountriesDataset = new carto.source.Dataset(`
@@ -33,22 +33,26 @@ const LACountriesPoly = new carto.layer.Layer(LACountriesDataset, LACountriesSty
 
 const LAWordsSource = new carto.source.SQL(`
   SELECT *
-    FROM test_scraper2_clean
+    FROM test_scraper2_clean1
     WHERE text like '% boludo %'
 `);
 
 const LAWordsStyle = new carto.style.CartoCSS(`
   #layer {
+
+    image-filters: colorize-alpha(blue, cyan, #008000, yellow , orange, red);
+    marker-file: url(http://s3.amazonaws.com/com.cartodb.assets.static/alphamarker.png);
+
+    marker-width: 15;
     marker-width: 6;
     marker-fill: #FF583E;
-    marker-fill-opacity: 0.4;
+    marker-fill-opacity: 0.03;
     marker-line-width: 0.5;
     marker-line-color: #FFFFFF;
-    marker-line-opacity: 0.4;
+    marker-line-opacity: 0.03;
     marker-type: ellipse;
     marker-allow-overlap: true;
-    marker-comp-op: src-atop;
-
+    comp-op: src-atop;
   }
 `);
 
@@ -58,7 +62,7 @@ const LAWordsStyle = new carto.style.CartoCSS(`
 
 //marker-comp-op: src-atop;
 const LAWords = new carto.layer.Layer(LAWordsSource, LAWordsStyle, {
-  featureOverColumns: ['user_name']
+  featureOverColumns: ['text']
 });
 
 
@@ -70,7 +74,7 @@ const popup = L.popup({ closeButton: false });
   LAWords.on(carto.layer.events.FEATURE_OVER, featureEvent => {
     popup.setLatLng(featureEvent.latLng);
     if (!popup.isOpen()) {
-      popup.setContent(featureEvent.data.user_name);
+      popup.setContent(featureEvent.data.text);
       popup.openOn(map);
     }
   });
@@ -141,10 +145,10 @@ function LayerActions(admin) {
         #layer {
           marker-width: 6;
           marker-fill: #FF583E;
-          marker-fill-opacity: 0.4;
+          marker-fill-opacity: 0.5;
           marker-line-width: 0.5;
           marker-line-color: #FFFFFF;
-          marker-line-opacity: 0.4;
+          marker-line-opacity: 0.5;
           marker-type: ellipse;
           marker-allow-overlap: true;
           marker-comp-op: src-atop;
@@ -201,13 +205,13 @@ function filterCountries(admin, word) {
   console.log(word)
   let query = `
     SELECT *
-      FROM test_scraper2_clean
+      FROM test_scraper2_clean1
       WHERE country IN (SELECT adm0_a3 FROM samerica_adm0) AND text like '% ${word} %'
   `;
   if (admin) {
     query = `
       SELECT *
-        FROM test_scraper2_clean
+        FROM test_scraper2_clean1
         WHERE country='${admin}' AND text like '% ${word} %'
     `;
   }
@@ -228,14 +232,14 @@ wordNames.forEach(admin => {
 function filterPopulatedPlacesByWord(admin, country) {
   let query = `
     SELECT *
-      FROM test_scraper2_clean
+      FROM test_scraper2_clean1
       WHERE text IS NOT NULL AND country IN (SELECT adm0_a3 FROM samerica_adm0)
   `;
   if (admin && country != '') {
     console.log('1')
     query = `
       SELECT *
-        FROM test_scraper2_clean
+        FROM test_scraper2_clean1
         WHERE text like '% ${admin} %' AND country = '${country}'
     `;
   }
@@ -243,7 +247,7 @@ function filterPopulatedPlacesByWord(admin, country) {
     console.log('2')
     query = `
       SELECT *
-        FROM test_scraper2_clean
+        FROM test_scraper2_clean1
         WHERE text like '% ${admin} %'
     `;
   }
@@ -254,7 +258,7 @@ function filterPopulatedPlacesByWord(admin, country) {
 
 //how many words
 const averagePopulation = new carto.dataview.Formula(LAWordsSource, 'one', {
-  operation: carto.operation.AVG
+  operation: carto.operation.SUM
 });
 
 averagePopulation.on('dataChanged', data => {
