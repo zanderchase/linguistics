@@ -221,7 +221,12 @@ function filterCountries(admin, word) {
 // Fill in the list of words
 const widgetDom = document.querySelector('#wordWidget');
 const wordsDom = widgetDom.querySelector('.js-words');
-const wordNames = ['carro', 'auto', 'pelotudo', 'oye', 'cono', 'campera', 'vaina', 'pana', 'pororo','vereda']
+const wordNames = ['parce', 'weon', 'pana', 'auto', 'carro', 'campera', 'chaqueta',
+ 'heladera', 'nevera', 'refrigerador', 'resfrio', 'gripe', 'resfriado',
+ 'novio', 'pololo', 'metro', 'subte', 'hijueputa', 'pelotudo', 'cono',
+ 'piscina', 'pileta', 'chamba', 'laburo', 'chela', 'birra',
+ 'pues', 'vaina', 'onda', 'bacan', 'ahre', 'oye', 'che', 'tranqui', 'raja',
+ 'flaca', 'pibe',  'pisco',  'apagon', 'humanitaria','sinluz']
 wordNames.forEach(admin => {
   const option = document.createElement('option');
   option.innerHTML = admin;
