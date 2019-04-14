@@ -1,281 +1,80 @@
-const map = L.map('map').setView([-25, 290], 3);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
-  maxZoom: 18
-}).addTo(map);
 
-// Adding Voyager Labels
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png', {
-  maxZoom: 18,
-  zIndex: 10
-}).addTo(map);
+    //let w = $(window).width();
+    //let h = $(window).height();
 
-var client = new carto.Client({
-  apiKey: 'd05d4259be09523d50d1e62ad1e12d8f9207442c',
-  username: 'zchase111'
-});
+    //let bs_md_mode = (w >= 768);
+heat(1200, true);
 
-const LACountriesDataset = new carto.source.Dataset(`
-  samerica_adm0
-`);
-const LACountriesStyle = new carto.style.CartoCSS(`
-  #layer {
-  polygon-fill: #162945;
-    polygon-opacity: 0.5;
-    ::outline {
-      line-width: 1;
-      line-color: #FFFFFF;
-      line-opacity: 0.5;
+
+function heat(w, md_mode) {
+    if(md_mode) {
+        $('#heat1').css('height', w / 2 * .8 + 'px');
+        $('#heat2').css('height', w / 2 * .8 + 'px');
+    } else {
+        $('#heat1').css('height', w + 'px');
+        $('#heat2').css('height', w + 'px');
     }
-  }
-`);
-const LACountriesPoly = new carto.layer.Layer(LACountriesDataset, LACountriesStyle);
 
-const LAWordsSource = new carto.source.SQL(`
-  SELECT *
-    FROM test_scraper2_clean1
-    WHERE text like '% boludo %'
-`);
+    Plotly.d3.json('https://raw.githubusercontent.com/plotly/datasets/master/custom_heatmap_colorscale.json', function (figure) {
+        let data = [
+            {
+                z: [
+                  [0.300714224,0.006559302,0.344128217,0.0,0.00379905,0.039170936,0.296665706,0.005831284,0.003131283],
+                  [0.028412088,0.140278169,0.02908897,0.188440252,0.188519683,0.134517339,0.032770668,0.134842408,0.123130423],
+                  [0.329613708,0.005915496,0.335799446,0.002857091,0.003917396,0.034822406,0.283942592,0.0,0.003131865],
+                  [0.028187168,0.163178831,0.031689329,0.190706874,0.160680921,0.153773623,0.026075627,0.143014251,0.102693376],
+                  [0.024429762,0.216745769,0.047333433,0.135012946,0.074924065,0.231952366,0.063434255,0.119590111,0.086577294],
+                  [0.035914457, 0.150953647, 0.03638574, 0.170952086, 0.195457281, 0.144300153, 0.02713371, 0.126727909, 0.112175018],
+                  [0.282059348,0.013684281,0.348820665,0.019719078,0.006488902,0.055215971,0.255127643,0.009475004, 0.009409107],
+                  [0.118234102, 0.116675832, 0.090464522, 0.136992387, 0.144087317, 0.11701872, 0.073768067, 0.113220644, 0.089538409],
+                  [0.285623963, 0.013982051, 0.36008852, 0.002132263, 0.005172478, 0.063740185, 0.24086997, 0.02226698, 0.006123589],
+                ],
+                x:
+                    ['Asunción','Bogotá','Buenos Aires','Caracas','Lima','Medellín', 'Montevideo', 'Quito', 'Santiago'],
+                y:
+                    ["tenés","tienes", "querés", "quieres", "usted", "eres", "sos", "tú","vos"],
+                type: 'heatmap',
+                colorscale: 'YIOrRd'
+            }
+        ];
+        let layout1 = {
+            title: 'Grammar<br>variation by city',
+            autosize: true, xaxis: {automargin: true}, yaxis: {automargin: true},
+        };
+        Plotly.newPlot('heat1', data, layout1);
+    });
 
-const LAWordsStyle = new carto.style.CartoCSS(`
-  #layer {
+    Plotly.d3.json('https://raw.githubusercontent.com/plotly/datasets/master/custom_heatmap_colorscale.json', function (figure) {
+        let data2 = [
+            {
+                z: [
+                  [0.277016876,0.0,0.45299679,0.011351041,0.01037571,0.0,0.221681993,0.011207194,0.015370396],
+                  [0.0,0.178220661,0.034837621,0.447987251,0.063614128,0.172566732,0.016348252,0.039049447,0.047375908],
+                  [0.216048187,0.019027934,0.262841863,0.015375896,0.056218927,0.013214271,0.140962681,0.033735652,0.242574588],
+                  [0.094262885,0.191909661,0.027193025,0.126667499,0.17669139,0.211824601,0.021981434,0.098576845,0.050892658],
+                  [0.357618539,0.009273301,0.293833167,0.014096248,0.029681603,0.0084959,0.243995578,0.012426439,0.030579225],
+                  [0.21498602, 0.0, 0.456539368, 0.0, 0.0, 0.0, 0.328474612, 0.0, 0.0],
+                  [0.056539132,0.303068581,0.030268538,0.093442128,0.0, 0.193984812, 0.0, 0.059308697,0.263388112,],
+                  [0.021808935,0.255918652,0.020023541,0.127954744,0.122314128,0.208668238,0.021242529,0.111208823,0.110860409],
+                  [0.18796433,0.055447012,0.173796614,0.040607625,0.07446887,0.031884804,0.162247418,0.10724883,0.166334496],
 
-    image-filters: colorize-alpha(blue, cyan, #008000, yellow , orange, red);
-    marker-file: url(http://s3.amazonaws.com/com.cartodb.assets.static/alphamarker.png);
+                ],
+                x:
+                    ['Asunción','Bogotá','Buenos Aires','Caracas','Lima','Medellín', 'Montevideo', 'Quito', 'Santiago'],
 
-    marker-width: 15;
-    marker-width: 6;
-    marker-fill: #FF583E;
-    marker-fill-opacity: 0.03;
-    marker-line-width: 0.5;
-    marker-line-color: #FFFFFF;
-    marker-line-opacity: 0.03;
-    marker-type: ellipse;
-    marker-allow-overlap: true;
-    comp-op: src-atop;
-  }
-`);
-
-
-
-
-
-//marker-comp-op: src-atop;
-const LAWords = new carto.layer.Layer(LAWordsSource, LAWordsStyle, {
-  featureOverColumns: ['text']
-});
-
-
-client.addLayers([LACountriesPoly, LAWords]);
-client.getLeafletLayer().addTo(map);
-
-
-const popup = L.popup({ closeButton: false });
-  LAWords.on(carto.layer.events.FEATURE_OVER, featureEvent => {
-    popup.setLatLng(featureEvent.latLng);
-    if (!popup.isOpen()) {
-      popup.setContent(featureEvent.data.text);
-      popup.openOn(map);
-    }
-  });
-
-LAWords.on(carto.layer.events.FEATURE_OUT, featureEvent => {
-  popup.removeFrom(map);
-});
-//console.log('dataview')
-const wordDataview = new
-carto.dataview.Category(LACountriesDataset, 'adm0_a3', {
-  limit: 16
-});
-wordDataview.on('dataChanged', data => {
-  const countryNames = data.categories.map(category => category.name).sort();
-  //console.log(countryNames);
-  console.log('dv1')
-  refreshWordsWidget(countryNames);
-});
-
-function refreshWordsWidget(adminNames) {
-  //console.log('refresh')
-  const widgetDom = document.querySelector('#wordWidget');
-  const wordsDom = widgetDom.querySelector('.js-words');
-
-  const widgetDom2 = document.querySelector('#countriesWidget');
-  const wordsDom2 = widgetDom2.querySelector('.js-countries');
-
-  const widgetDom3 = document.querySelector('#selectorWidget');
-  const wordsDom3 = widgetDom3.querySelector('.js-selector');
-
-  wordsDom.onchange = event => {
-    var e = document.getElementById("countriesWidget");
-
-    //console.log(wordsDom2.options[wordsDom2.selectedIndex].value)
-    var country = wordsDom2.options[wordsDom2.selectedIndex].value
-    const admin = event.target.value;
-    filterPopulatedPlacesByWord(admin, country);
-  };
-
-  wordsDom2.onchange = event => {
-    //console.log('change')
-    var word = wordsDom.options[wordsDom.selectedIndex].value
-    const admin = event.target.value;
-
-    highlightCountry(admin);
-    filterCountries(admin, word);
-  };
-
-  wordsDom3.onchange = event => {
-    //console.log('change')
-    const admin = event.target.value;
-    LayerActions(admin);
-  };
-
-  adminNames.forEach(admin => {
-    //console.log(admin);
-    const option = document.createElement('option');
-    option.innerHTML = admin;
-    option.value = admin;
-    wordsDom2.appendChild(option);
-  });
+                y:
+                    ['boludo', 'vaina', 'onda', 'pues', 'che', 'campera', 'chaqueta', 'carro', 'auto'],
+                type: 'heatmap',
+                colorscale: 'YIOrRd'
+            }
+        ];
+        let layout2 = {
+            title: 'Lexicon<br>variation by city',
+            autosize: true,
+            xaxis: {automargin: true},
+            yaxis: {automargin: true}
+        };
+        Plotly.newPlot('heat2', data2, layout2);
+    });
 }
-
-function LayerActions(admin) {
-  console.log(admin)
-  if (admin == 'dots'){
-      LAWordsStyle.setContent(`
-        #layer {
-          marker-width: 6;
-          marker-fill: #FF583E;
-          marker-fill-opacity: 0.5;
-          marker-line-width: 0.5;
-          marker-line-color: #FFFFFF;
-          marker-line-opacity: 0.5;
-          marker-type: ellipse;
-          marker-allow-overlap: true;
-          marker-comp-op: src-atop;
-
-        }
-      `);
-    }
-  else if (admin == 'heatmap') {
-      LAWordsStyle.setContent(`
-        #layer {
-          image-filters: colorize-alpha(blue, cyan, #008000, yellow , orange, red);
-          marker-file: url(http://s3.amazonaws.com/com.cartodb.assets.static/alphamarker.png);
-
-          marker-width: 15;
-          marker-width: 6;
-          marker-fill: #FF583E;
-          marker-fill-opacity: 0.03;
-          marker-line-width: 0.5;
-          marker-line-color: #FFFFFF;
-          marker-line-opacity: 0.03;
-          marker-type: ellipse;
-          marker-allow-overlap: true;
-
-
-        }
-      `);
-    }
-}
-function highlightCountry(admin) {
-  //console.log(admin);
-  let cartoCSS = `
-    #layer {
-      polygon-fill: #162945;
-      polygon-opacity: 0.5;
-      ::outline {
-        line-width: 1;
-        line-color: #FFFFFF;
-        line-opacity: 0.5;
-      }
-    }
-  `;
-  if (admin) {
-    cartoCSS = `
-      ${cartoCSS}
-      #layer[adm0_a3!='${admin}'] {
-        polygon-fill: #CDCDCD;
-      }
-    `;
-  }
-  LACountriesStyle.setContent(cartoCSS);
-}
-
-function filterCountries(admin, word) {
-  console.log(word)
-  let query = `
-    SELECT *
-      FROM test_scraper2_clean1
-      WHERE country IN (SELECT adm0_a3 FROM samerica_adm0) AND text like '% ${word} %'
-  `;
-  if (admin) {
-    query = `
-      SELECT *
-        FROM test_scraper2_clean1
-        WHERE country='${admin}' AND text like '% ${word} %'
-    `;
-  }
-  LAWordsSource.setQuery(query);
-}
-
-// Fill in the list of words
-const widgetDom = document.querySelector('#wordWidget');
-const wordsDom = widgetDom.querySelector('.js-words');
-const wordNames = ['parce', 'weon', 'pana', 'auto', 'carro', 'campera', 'chaqueta',
- 'heladera', 'nevera', 'refrigerador', 'resfrio', 'gripe', 'resfriado',
- 'novio', 'pololo', 'metro', 'subte', 'hijueputa', 'pelotudo', 'cono',
- 'piscina', 'pileta', 'chamba', 'laburo', 'chela', 'birra',
- 'pues', 'vaina', 'onda', 'bacan', 'ahre', 'oye', 'che', 'tranqui', 'raja',
- 'flaca', 'pibe',  'pisco',  'apagon', 'humanitaria','sinluz']
-wordNames.forEach(admin => {
-  const option = document.createElement('option');
-  option.innerHTML = admin;
-  option.value = admin;
-  wordsDom.appendChild(option);
-});
-
-function filterPopulatedPlacesByWord(admin, country) {
-  let query = `
-    SELECT *
-      FROM test_scraper2_clean1
-      WHERE text IS NOT NULL AND country IN (SELECT adm0_a3 FROM samerica_adm0)
-  `;
-  if (admin && country != '') {
-    console.log('1')
-    query = `
-      SELECT *
-        FROM test_scraper2_clean1
-        WHERE text like '% ${admin} %' AND country = '${country}'
-    `;
-  }
-  else if (admin) {
-    console.log('2')
-    query = `
-      SELECT *
-        FROM test_scraper2_clean1
-        WHERE text like '% ${admin} %'
-    `;
-  }
-
-  LAWordsSource.setQuery(query);
-}
-
-
-//how many words
-const averagePopulation = new carto.dataview.Formula(LAWordsSource, 'one', {
-  operation: carto.operation.SUM
-});
-
-averagePopulation.on('dataChanged', data => {
-  refreshAveragePopulationWidget(data.result);
-});
-
-function refreshAveragePopulationWidget(avgPopulation) {
-  console.log('here')
-  console.log(avgPopulation)
-  const widgetDom = document.querySelector('#avgPopulationWidget');
-  const averagePopulationDom = widgetDom.querySelector('.js-average-population');
-  averagePopulationDom.innerText = Math.floor(avgPopulation);
-}
-client.addDataview(averagePopulation);
-client.addDataview(wordDataview);
